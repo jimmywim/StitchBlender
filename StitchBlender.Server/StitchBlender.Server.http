@@ -1,0 +1,6 @@
+@StitchBlender.Server_HostAddress = http://localhost:5069
+
+GET {{StitchBlender.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StitchBlender.Server", "StitchBlender.Server\StitchBlender.Server.csproj", "{B4D086E6-89C7-42A9-842E-2C619CD04448}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "stitchblender.client", "stitchblender.client\stitchblender.client.esproj", "{E54E820C-D6E0-4402-BE4B-325CCEA3557D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4D086E6-89C7-42A9-842E-2C619CD04448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D086E6-89C7-42A9-842E-2C619CD04448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D086E6-89C7-42A9-842E-2C619CD04448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D086E6-89C7-42A9-842E-2C619CD04448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54E820C-D6E0-4402-BE4B-325CCEA3557D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA972DD4-5630-444C-BD5C-584C4E3D70B5}
+	EndGlobalSection
+EndGlobal

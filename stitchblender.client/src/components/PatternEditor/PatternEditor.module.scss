@@ -1,0 +1,39 @@
+.patternEditor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .patternControls {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .templateGrid {
+    display: block;
+    margin-top: 30px;
+
+    .templateRow {
+      display: flex;
+
+      .templateCell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        border: 1px solid white;
+        cursor: pointer;
+      }
+
+      .templateRowNumber {
+        border: none;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}

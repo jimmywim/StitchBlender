@@ -30,4 +30,5 @@ export interface IPattern {
   rows: IPatternRow[];
   name: string;
   id: string;
+  builtIn: boolean;
 }

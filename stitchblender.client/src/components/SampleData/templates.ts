@@ -4,6 +4,7 @@ import { IPattern } from "../../clientmodels";
 export const SampleTemplate96: IPattern = {
   name: 'Template #96',
   id: '96',
+  builtIn: true,
   rows: [
     {
       cells: [
@@ -41,6 +42,7 @@ export const SampleTemplate96: IPattern = {
 export const SampleTemplate30: IPattern = {
   name: 'Template #30',
   id: '30',
+  builtIn: true,
   rows: [
     {
       cells: [
@@ -63,6 +65,7 @@ export const SampleTemplate30: IPattern = {
 export const SampleTemplate106: IPattern = {
   name: 'Template #106',
   id: '106',
+  builtIn: true,
   rows: [
     {
       cells: [

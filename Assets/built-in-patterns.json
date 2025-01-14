@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "Template #96",
+    "Id": "96",
+    "BuiltIn": true,
+    "Rows": [
+      {
+        "Cells": [
+          {
+            "IsForeground": true
+          }
+        ]
+      }
+    ]
+  }
+]

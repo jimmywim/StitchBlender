@@ -1,21 +1,36 @@
 import * as React from 'react';
 
 import styles from './TemplatePicker.module.scss';
-import { IPattern } from '../../clientmodels';
-import { SampleTemplate106, SampleTemplate30, SampleTemplate96 } from '../SampleData/templates';
-import { Button, Input, MenuItem, Popover, Select } from '@mui/material';
+import { Button, FormControl, Input, InputLabel, MenuItem, Popover, Select } from '@mui/material';
+import { PatternsService } from '../../services/PatternsService';
+import { Pattern } from '../../sbClient/models';
 
 interface ITemplatePickerProps {
-  onChange: (pattern: IPattern) => void;
-  value: IPattern;
+  onChange: (pattern: Pattern) => void;
+  value: Pattern;
 }
 
 export const TemplatePicker: React.FunctionComponent<ITemplatePickerProps> = (props) => {
-  const [patterns, setPatterns] = React.useState<IPattern[]>([SampleTemplate30, SampleTemplate96, SampleTemplate106]);
-  const [selectedValue, setSelectedValue] = React.useState<string>(props.value.id);
-  const [selectedPattern, setSelectedPattern] = React.useState<IPattern>(props.value);
+  const [patterns, setPatterns] = React.useState<Pattern[]>([]);
+  const [selectedValue, setSelectedValue] = React.useState<string>(props.value.id as string);
+  const [selectedPattern, setSelectedPattern] = React.useState<Pattern>(props.value);
   const [renameOpen, setRenameOpen] = React.useState<boolean>(false);
   const [renameEl, setRenameEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const fetchPatterns = React.useCallback(async () => {
+    const patts = await PatternsService.GetAllPatterns();
+    setPatterns(patts);
+    const patt = patts[0];
+    if (patt) {
+      props.onChange(patt);
+      setSelectedValue(patt.id as string);
+      setSelectedPattern(patt);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    fetchPatterns();
+  }, [fetchPatterns]);
 
   const patternSelected = (patternId: string) => {
     setSelectedValue(patternId);
@@ -31,6 +46,12 @@ export const TemplatePicker: React.FunctionComponent<ITemplatePickerProps> = (pr
       ...selectedPattern,
       name
     });
+
+    const patt = patterns.find(p => p.id === selectedPattern.id);
+    if (patt) {
+      patt.name = name;
+      setPatterns(patterns);
+    }
   }
 
   React.useEffect(() => {
@@ -41,24 +62,26 @@ export const TemplatePicker: React.FunctionComponent<ITemplatePickerProps> = (pr
       ]);
     }
 
-    setSelectedValue(props.value.id);
+    setSelectedValue(props.value.id as string);
     setSelectedPattern(props.value);
   }, [props.value, patterns]);
 
   return (
     <div>
-      <Select
-        value={selectedValue}
-        label='Pattern'
-        onChange={(ev) => patternSelected(ev.target.value)}
-      >
-        {
-          patterns.map((patt) => (
-            <MenuItem key={patt.id} value={patt.id}>{patt.name}</MenuItem>
-          ))
-        }
-      </Select>
-
+      <FormControl>
+        <InputLabel>Pattern</InputLabel>
+        <Select
+          value={selectedValue}
+          defaultValue={selectedValue}
+          onChange={(ev) => patternSelected(ev.target.value)}
+        >
+          {
+            patterns.map((patt) => (
+              <MenuItem key={patt.id} value={patt.id as string}>{patt.name}</MenuItem>
+            ))
+          }
+        </Select>
+      </FormControl>
       {
         !selectedPattern?.builtIn &&
         <>

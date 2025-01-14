@@ -1,4 +1,9 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
+using StitchBlender.Server.Models.Options;
+using StitchBlender.Server.Services;
+
 namespace StitchBlender.Server
 {
     public class Program
@@ -14,7 +19,23 @@ namespace StitchBlender.Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddTransient<StitchBlenderBlobService, StitchBlenderBlobService>();
+
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(options =>
+                {
+                    builder.Configuration.Bind("AzureAd", options);
+                    options.TokenValidationParameters.NameClaimType = "name";
+                }, options => { builder.Configuration.Bind("AzureAd", options); });
+
+
+            builder.Services.Configure<StitchBlenderOptions>(builder.Configuration.GetSection("StitchBlenderOptions"));
+
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -27,9 +48,6 @@ namespace StitchBlender.Server
             }
 
             app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
 
             app.MapControllers();
 

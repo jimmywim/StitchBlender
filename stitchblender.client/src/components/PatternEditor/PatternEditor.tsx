@@ -1,79 +1,82 @@
 import * as React from 'react';
 
 import styles from './PatternEditor.module.scss';
-import { IPattern, IPatternCell } from '../../clientmodels';
 import { Field } from '../Field/Field';
-import { SampleTemplate96 } from '../SampleData/templates';
+import { BlankPattern } from '../SampleData/templates';
 import { TemplatePicker } from '../TemplatePicker/TemplatePicker';
 
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@mui/material';
+import { Pattern, PatternCell } from '../../sbClient/models';
+import { PatternsService } from '../../services/PatternsService';
 
 interface IPatternEditorProps {
-  pattern?: IPattern;
+  pattern?: Pattern;
 }
 
 export const PatternEditor: React.FunctionComponent<IPatternEditorProps> = (props) => {
-  const [pattern, setPattern] = React.useState<IPattern>(SampleTemplate96);
+  const [pattern, setPattern] = React.useState<Pattern>(BlankPattern);
   const [editToken, setEditToken] = React.useState<number>(0);
 
-  const [rowCount, setRowcount] = React.useState<number>(3);
-  const [columnCount, setColumnCount] = React.useState<number>(3);
+  const [rowCount, setRowcount] = React.useState<number>(BlankPattern.rows.length);
+  const [columnCount, setColumnCount] = React.useState<number>(BlankPattern.rows[0].cells.length);
 
   React.useEffect(() => {
     setPattern(pattern);
   }, [props.pattern]);
 
   const newPattern = () => {
-    setPattern({
-      name: 'New Pattern',
-      id: uuidv4(),
-      builtIn: false,
-      rows: Array.apply(null, Array(rowCount)).map(r => {
-        return {
-          cells: Array.apply(null, Array(columnCount)).map(c => { return {} as IPatternCell })
-        }
-      })
-    });
+    setPattern(BlankPattern);
+    setRowcount(BlankPattern.rows.length);
+    setColumnCount(BlankPattern.rows[0].cells.length);
   };
 
   const renderRowNumber = (rowId: number) => {
-    return <>{(rowId - pattern.rows.length) * -1}</>
+    return <>{(rowId - (pattern.rows?.length ?? 0)) * -1}</>
   };
 
-  const cellClicked = (cell: IPatternCell) => {
+  const cellClicked = (cell: PatternCell) => {
     cell.isForeground = !cell.isForeground;
     setEditToken(editToken + 1);
   };
 
   const rowsChanged = (rows: number) => {
-    if (rows < pattern.rows.length) {
-      pattern.rows.splice(0, 1);
-      setRowcount(rowCount - 1);
-    } else {
-      pattern.rows.push({
-        cells: Array.apply(null, Array(columnCount)).map(c => { return {} as IPatternCell; })
-      });
+    if (pattern.rows) {
+      if (rows < pattern.rows.length) {
+        pattern.rows.splice(0, 1);
+        setRowcount(rowCount - 1);
+      } else {
+        pattern.rows.push({
+          cells: Array.apply(null, Array(columnCount)).map(c => { return {} as PatternCell; })
+        });
 
-      setRowcount(rowCount + 1);
+        setRowcount(rowCount + 1);
+      }
     }
 
     setEditToken(editToken + 1);
   };
 
   const columnsChanged = (cols: number) => {
-    for (const row of pattern.rows) {
-      if (cols < row.cells.length) {
-        row.cells.splice(0, 1);
-        setColumnCount(columnCount - 1);
-      } else {
-        row.cells.push({});
-        setColumnCount(columnCount + 1);
+    if (pattern.rows) {
+      for (const row of pattern.rows) {
+        if (row.cells) {
+          if (cols < row.cells.length) {
+            row.cells.splice(0, 1);
+            setColumnCount(columnCount - 1);
+          } else {
+            row.cells.push({});
+            setColumnCount(columnCount + 1);
+          }
+        }
       }
     }
-
     setEditToken(editToken + 1);
   };
+
+  const save = async () => {
+    await PatternsService.SavePattern(pattern);
+  } ; 
 
   return (
     <div className={styles.patternEditor}>
@@ -103,6 +106,10 @@ export const PatternEditor: React.FunctionComponent<IPatternEditorProps> = (prop
             value={columnCount}
             onInput={(ev) => columnsChanged(ev.currentTarget.valueAsNumber)}
           />
+        </Field>
+
+        <Field>
+          <Button onClick={save}>Save Changes</Button>
         </Field>
       </div>
 

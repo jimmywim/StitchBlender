@@ -1,4 +1,12 @@
 import { IPattern } from "../../clientmodels";
+import { v4 as uuidv4 } from 'uuid';
+
+export const BlankPattern: IPattern = {
+  name: 'New Pattern',
+  id: uuidv4(),
+  builtIn: false,
+  rows: [{ cells: [{}] }]
+}
 
 // From Design 96
 export const SampleTemplate96: IPattern = {

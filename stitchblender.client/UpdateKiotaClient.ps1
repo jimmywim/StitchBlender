@@ -1,0 +1,2 @@
+Invoke-WebRequest -UseBasicParsing -Uri https://localhost:7239/swagger/v1/swagger.json -OutFile ../Assets/swagger.json
+kiota generate -l typescript -d ../Assets/swagger.json -c StitchBlenderClient -o ./src/sbClient
